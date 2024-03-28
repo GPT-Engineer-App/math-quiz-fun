@@ -5,10 +5,25 @@ const generateQuestion = () => {
   const a = Math.floor(Math.random() * 10) + 1;
   const b = Math.floor(Math.random() * 10) + 1;
   const correctAnswer = a * b;
-  const wrongAnswers = Array.from({ length: 3 }, () => {
-    const offset = Math.floor(Math.random() * 5) - 2;
-    return correctAnswer + offset;
+  let wrongAnswers = Array.from({ length: 3 }, () => {
+    let wrongAnswer;
+    do {
+      const offset = Math.floor(Math.random() * 5) - 2;
+      wrongAnswer = correctAnswer + offset;
+    } while (wrongAnswer === correctAnswer);
+    return wrongAnswer;
   });
+
+  wrongAnswers = [...new Set(wrongAnswers)];
+  while (wrongAnswers.length < 3) {
+    let wrongAnswer;
+    do {
+      const offset = Math.floor(Math.random() * 5) - 2;
+      wrongAnswer = correctAnswer + offset;
+    } while (wrongAnswers.includes(wrongAnswer) || wrongAnswer === correctAnswer);
+    wrongAnswers.push(wrongAnswer);
+  }
+
   const answers = [...wrongAnswers, correctAnswer].sort(() => Math.random() - 0.5);
   return { question: `${a} x ${b}`, answers, correctAnswer };
 };
