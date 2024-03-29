@@ -43,7 +43,7 @@ const Index = () => {
     if (remainingTime > 0) {
       if (answer === gameState.correctAnswer) {
         setScore({ ...score, correct: score.correct + 1 });
-        setRemainingTime(remainingTime + 3);
+        setRemainingTime(remainingTime + 1);
       } else {
         setScore({ ...score, incorrect: score.incorrect + 1 });
       }
