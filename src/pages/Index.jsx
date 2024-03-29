@@ -68,6 +68,7 @@ const Index = () => {
           Simple Math or ✖️
         </Heading>
         <ProgressBar remainingTime={remainingTime} />
+        <ProgressBar remainingTime={remainingTime} />
         {remainingTime > 0 ? (
           <>
             <Text fontSize="4xl">{gameState.question} = ?</Text>
