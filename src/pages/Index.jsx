@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Box, Heading, Text, VStack, Grid, Button, useColorModeValue } from "@chakra-ui/react";
+import React, { useState, useEffect } from "react";
+import { Box, Heading, Text, VStack, Grid, Button, Progress } from "@chakra-ui/react";
 
 const generateQuestion = () => {
   const a = Math.floor(Math.random() * 10) + 2;
@@ -29,18 +29,37 @@ const generateQuestion = () => {
   return { question: `${a} x ${b}`, answers, correctAnswer };
 };
 
+const ProgressBar = ({ remainingTime }) => {
+  const progress = (remainingTime / 20) * 100;
+  return <Progress value={progress} size="sm" colorScheme="blue" />;
+};
+
 const Index = () => {
   const [score, setScore] = useState({ correct: 0, incorrect: 0 });
   const [gameState, setGameState] = useState(generateQuestion());
+  const [remainingTime, setRemainingTime] = useState(20);
 
   const handleAnswer = (answer) => {
-    if (answer === gameState.correctAnswer) {
-      setScore({ ...score, correct: score.correct + 1 });
-    } else {
-      setScore({ ...score, incorrect: score.incorrect + 1 });
+    if (remainingTime > 0) {
+      if (answer === gameState.correctAnswer) {
+        setScore({ ...score, correct: score.correct + 1 });
+        setRemainingTime(remainingTime + 3);
+      } else {
+        setScore({ ...score, incorrect: score.incorrect + 1 });
+      }
+      setGameState(generateQuestion());
     }
-    setGameState(generateQuestion());
   };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setRemainingTime((prevTime) => (prevTime > 0 ? prevTime - 1 : 0));
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   return (
     <Box textAlign="center" fontSize="xl" minH="100vh" p={4}>
@@ -48,14 +67,21 @@ const Index = () => {
         <Heading as="h1" size="2xl">
           Simple Math or ✖️
         </Heading>
-        <Text fontSize="4xl">{gameState.question} = ?</Text>
-        <Grid templateColumns="repeat(2, 1fr)" gap={6}>
-          {gameState.answers.map((answer, index) => (
-            <Button key={index} onClick={() => handleAnswer(answer)} size="lg" colorScheme="blue">
-              {answer}
-            </Button>
-          ))}
-        </Grid>
+        <ProgressBar remainingTime={remainingTime} />
+        {remainingTime > 0 ? (
+          <>
+            <Text fontSize="4xl">{gameState.question} = ?</Text>
+            <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+              {gameState.answers.map((answer, index) => (
+                <Button key={index} onClick={() => handleAnswer(answer)} size="lg" colorScheme="blue">
+                  {answer}
+                </Button>
+              ))}
+            </Grid>
+          </>
+        ) : (
+          <Text fontSize="4xl">Time's up!</Text>
+        )}
         <Text fontSize="2xl">
           Score: {score.correct} correct, {score.incorrect} incorrect
         </Text>
