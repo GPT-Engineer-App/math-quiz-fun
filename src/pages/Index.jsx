@@ -8,8 +8,9 @@ const generateQuestion = () => {
   let wrongAnswers = Array.from({ length: 3 }, () => {
     let wrongAnswer;
     do {
-      const offset = Math.floor(Math.random() * 5) - 2;
-      wrongAnswer = correctAnswer + offset;
+      const factor = Math.random() < 0.5 ? a : b;
+      const multiplier = Math.floor(Math.random() * 10) + 1;
+      wrongAnswer = factor * multiplier;
     } while (wrongAnswer === correctAnswer);
     return wrongAnswer;
   });
