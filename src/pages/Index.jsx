@@ -45,7 +45,7 @@ const Index = () => {
     <Box textAlign="center" fontSize="xl" minH="100vh" p={4}>
       <VStack spacing={8}>
         <Heading as="h1" size="2xl">
-          Multiplication Practice
+          Simple Math or ✖️
         </Heading>
         <Text fontSize="4xl">{gameState.question} = ?</Text>
         <Grid templateColumns="repeat(2, 1fr)" gap={6}>
