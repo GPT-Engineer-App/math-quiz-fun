@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Box, Heading, Text, VStack, Grid, Button, useColorModeValue } from "@chakra-ui/react";
 
 const generateQuestion = () => {
-  const a = Math.floor(Math.random() * 10) + 1;
-  const b = Math.floor(Math.random() * 10) + 1;
+  const a = Math.floor(Math.random() * 10) + 2;
+  const b = Math.floor(Math.random() * 10) + 2;
   const correctAnswer = a * b;
   let wrongAnswers = Array.from({ length: 3 }, () => {
     let wrongAnswer;
